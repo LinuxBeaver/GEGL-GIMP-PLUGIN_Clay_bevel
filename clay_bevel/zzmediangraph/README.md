@@ -1,8 +1,3 @@
-gegl:pencil
-=========
-
-A custom GEGL operation (and by extension GIMP filter) renders a basic pencil drawing
-
 
 
 ## Compiling and Installing
