@@ -164,7 +164,7 @@ gegl_op_class_init (GeglOpClass *klass)
   gegl_operation_class_set_keys (operation_class,
     "name",        "gegl:zzmediangraph",
     "title",       _("zzmediangraph"),
-    "categories",  "generic",
+    "categories",  "hidden",
     "reference-hash", "29b1521fa0c14egh8a7ba97b41d8d1e",
     "description", _("Filter only exist to power custom filters made by beaver"),
     NULL);
