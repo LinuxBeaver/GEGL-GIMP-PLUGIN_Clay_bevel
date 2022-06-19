@@ -42,7 +42,7 @@ property_double (elevation, _("Elevation"), 53.0)
     value_range (25, 90)
     ui_meta ("unit", "degree")
 
-property_int (depth, _("Depth"), 99)
+property_int (depth, _("Depth (makes darker)"), 26)
     description (_("Filter width"))
     value_range (1, 100)
 
@@ -67,6 +67,9 @@ property_double  (alpha_percentile, _("Internal Median Blur Alpha percentile"), 
 property_double (gaus, _("Internal Gaussian"), 3)
    description (_("Standard deviation for the horizontal axis"))
    value_range (0.0, 5.0)
+
+
+
 
 #else
 
@@ -114,7 +117,7 @@ static void attach (GeglOperation *operation)
   graph2    = gegl_node_new_child (gegl,
                                   "operation", "gegl:zzopacity",
                                   NULL);
-
+ 
 
 
 
