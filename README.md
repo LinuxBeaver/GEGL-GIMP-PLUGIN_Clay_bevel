@@ -1,6 +1,8 @@
 ![image preview](previewbevel.png)
 
-You need to build clay.so/dll zzmediangraph.so/dll and zzopacity.so/dll and put them in /gegl-0.4/plug-ins 
+You need to build clay.so/dll zzmediangraph.so/dll and zzopacity.so/dll  zzmlayer.so/dll, mcol.so/dll and put them in /gegl-0.4/plug-ins 
+If you already have copies some of these from my existing filters it is okay to overwrite them.
+
 ## Compiling and Installing
 
 ### Linux
