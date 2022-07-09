@@ -22,6 +22,9 @@
 
 #ifdef GEGL_PROPERTIES
 
+
+
+
 enum_start (gegl_emboss_typex)
   enum_value (GEGL_EMBOSS_TYPE_EMBOSSx,  "embossx",  N_("Embossx"))
   enum_value (GEGL_EMBOSS_TYPE_BUMPMAPx, "bumpmapx", N_("Bumpmapx (preserve original colors)"))
@@ -68,6 +71,20 @@ property_double (gaus, _("Internal Gaussian"), 3)
    description (_("Standard deviation for the horizontal axis"))
    value_range (0.0, 5.0)
 
+property_double (scale, _("Desaturate"), 1.0)
+    description(_("Scale, strength of effect"))
+    value_range (0.0, 1.0)
+    ui_range (0.0, 1.0)
+
+property_double (lightness, _("Lightness"), 0.0)
+   description  (_("Lightness adjustment"))
+   value_range  (-18.0, 18.0)
+
+
+property_color  (value, _("Recolor (works only on grayscale image or white text)"), "#ffffff")
+
+property_file_path(src, _("Image file Overlay (works only on grayscale image or white text)"), "")
+    description (_("Source image file path (png, jpg, raw, svg, bmp, tif, ...)"))
 
 
 
@@ -82,7 +99,7 @@ property_double (gaus, _("Internal Gaussian"), 3)
 static void attach (GeglOperation *operation)
 {
   GeglNode *gegl = operation->node;
-  GeglNode *input, *graph1, *emboss, *median, *median2, *gaussian, *median3, *graph2, *output;
+  GeglNode *input, *mcol, *gray, *graph1, *emboss, *median, *median2, *gaussian, *median3, *graph2, *lightness, *imagefileoverlay, *output;
 
   input    = gegl_node_get_input_proxy (gegl, "input");
   output   = gegl_node_get_output_proxy (gegl, "output");
@@ -91,6 +108,10 @@ static void attach (GeglOperation *operation)
 
   median    = gegl_node_new_child (gegl,
                                   "operation", "gegl:median-blur",
+                                  NULL);
+
+  mcol    = gegl_node_new_child (gegl,
+                                  "operation", "gegl:mcol",
                                   NULL);
 
   gaussian    = gegl_node_new_child (gegl,
@@ -117,6 +138,20 @@ static void attach (GeglOperation *operation)
   graph2    = gegl_node_new_child (gegl,
                                   "operation", "gegl:zzopacity",
                                   NULL);
+
+  gray    = gegl_node_new_child (gegl,
+                                  "operation", "gegl:saturation",
+                                  NULL);
+
+  imagefileoverlay    = gegl_node_new_child (gegl,
+                                  "operation", "gegl:zzmlayer",
+                                  NULL);
+
+  lightness    = gegl_node_new_child (gegl,
+                                  "operation", "gegl:hue-chroma",
+                                  NULL);
+ 
+ 
  
 
 
@@ -145,6 +180,13 @@ static void attach (GeglOperation *operation)
 
   gegl_operation_meta_redirect (operation, "alpha-percentile", median, "alpha-percentile");
 
+  gegl_operation_meta_redirect (operation, "value", mcol, "value");
+
+  gegl_operation_meta_redirect (operation, "scale", gray, "scale");
+
+  gegl_operation_meta_redirect (operation, "src", imagefileoverlay, "src");
+
+  gegl_operation_meta_redirect (operation, "lightness", lightness, "lightness");
 
 
 
@@ -154,7 +196,9 @@ static void attach (GeglOperation *operation)
 
 
 
-  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, graph2, output, NULL);
+
+
+  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, graph2, gray, lightness, mcol, imagefileoverlay, output, NULL);
 
 
 
