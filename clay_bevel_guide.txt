@@ -1,4 +1,4 @@
-Peserve color mode is to preserve the original Colors
+Preserve color mode is to preserve the original Colors
 Color and Image file overlay mode is for image file overlays or recoloring of the bevel
 
 Azimuth is the light rotation
