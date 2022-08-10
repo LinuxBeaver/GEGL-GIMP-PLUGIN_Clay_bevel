@@ -1,0 +1,22 @@
+BumpMapx is to preserve the original Colors
+EmbossX is for image file overlays or recoloring
+
+Azimuth is the light rotation
+
+Elevation is the bumpmap's angle
+
+Depth enhances the bevel by darkening its inners
+
+Internal Median Blur Radius is the main control of the bevel effect
+
+Interal Median Percentile sliders makes the bevel slim if down and fat if slide up. 
+Play around with the two to find the best setting. Certain combinations ruin the bevel. I do
+not really understand what the internal medians do but I kept them for unique customizations.
+
+Internal Gaussian makes the bevel smooth and even puffy on high settings and hard edged on its lower setting.
+
+Desaturate is deprecated and will be removed in future releases
+
+Lightness makes the color brighter.
+
+EmbossX setting is used for recoloring and image file overlays. To use image file overlays change BumpMapX to EmbossX.
