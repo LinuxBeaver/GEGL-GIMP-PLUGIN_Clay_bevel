@@ -15,8 +15,6 @@ not really understand what the internal medians do but I kept them for unique cu
 
 Internal Gaussian makes the bevel smooth and even puffy on high settings and hard edged on its lower setting.
 
-Desaturate is deprecated and will be removed in future releases
-
 Lightness makes the color brighter.
 
 Recolor and Image file overlay recommend changing modes from Preserve Color to Color and Image Overlay. If not it will produce an effect similar to be multiply blend mode.
