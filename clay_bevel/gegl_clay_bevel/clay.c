@@ -26,8 +26,8 @@
 
 
 enum_start (gegl_emboss_typex)
-  enum_value (GEGL_EMBOSS_TYPE_EMBOSSx,  "embossx",  N_("Embossx"))
-  enum_value (GEGL_EMBOSS_TYPE_BUMPMAPx, "bumpmapx", N_("Bumpmapx (preserve original colors)"))
+  enum_value (GEGL_EMBOSS_TYPE_EMBOSSx,  "embossx",  N_("Recolor and Image file overlay mode"))
+  enum_value (GEGL_EMBOSS_TYPE_BUMPMAPx, "bumpmapx", N_("Preserve original color mode)"))
 enum_end (GeglEmbossTypex)
 
 property_enum (type, _("Emboss Type"),
@@ -68,22 +68,18 @@ property_double  (alpha_percentile, _("Internal Median Blur Alpha percentile"), 
 
 
 property_double (gaus, _("Internal Gaussian"), 3)
-   description (_("Standard deviation for the horizontal axis"))
+   description (_("Standard deviation for the XY axis"))
    value_range (0.0, 5.0)
 
-property_double (scale, _("Desaturate"), 1.0)
-    description(_("Scale, strength of effect"))
-    value_range (0.0, 1.0)
-    ui_range (0.0, 1.0)
 
 property_double (lightness, _("Lightness"), 0.0)
    description  (_("Lightness adjustment"))
    value_range  (-18.0, 18.0)
 
 
-property_color  (value, _("Recolor (works only on grayscale image or white text)"), "#ffffff")
+property_color  (value, _("Recolor (works best using image color overlay mode"), "#ffffff")
 
-property_file_path(src, _("Image file Overlay (works only on grayscale image or white text)"), "")
+property_file_path(src, _("Image file Overlay (works best using image color overlay mode)"), "")
     description (_("Source image file path (png, jpg, raw, svg, bmp, tif, ...)"))
 
 
