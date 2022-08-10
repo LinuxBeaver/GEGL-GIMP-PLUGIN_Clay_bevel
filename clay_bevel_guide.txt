@@ -1,5 +1,5 @@
 BumpMapx is to preserve the original Colors
-EmbossX is for image file overlays or recoloring
+EmbossX is for image file overlays or recoloring of the bevel
 
 Azimuth is the light rotation
 
