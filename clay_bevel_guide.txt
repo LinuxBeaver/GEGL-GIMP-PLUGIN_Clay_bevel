@@ -1,5 +1,5 @@
-BumpMapx is to preserve the original Colors
-EmbossX is for image file overlays or recoloring of the bevel
+Peserve color mode is to preserve the original Colors
+Color and Image file overlay mode is for image file overlays or recoloring of the bevel
 
 Azimuth is the light rotation
 
@@ -19,4 +19,4 @@ Desaturate is deprecated and will be removed in future releases
 
 Lightness makes the color brighter.
 
-EmbossX setting is used for recoloring and image file overlays. To use image file overlays change BumpMapX to EmbossX.
+Recolor and Image file overlay recommend changing modes from Preserve Color to Color and Image Overlay. If not it will produce an effect similar to be multiply blend mode.
