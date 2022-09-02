@@ -255,7 +255,7 @@ gegl_op_class_init (GeglOpClass *klass)
   gegl_operation_class_set_keys (operation_class,
     "name",        "gegl:clay",
     "title",       _("Clay Bevel"),
-    "categories",  "Aristic",
+    "categories",  "Artistic",
     "reference-hash", "33do6a1h24fk10fjf25sb2ac",
     "description", _("Clay Bevel Text styling using GEGL. This does not work on small text.)  "
                      ""),
