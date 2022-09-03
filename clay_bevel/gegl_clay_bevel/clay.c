@@ -95,6 +95,9 @@ property_double (lightness, _("Lightness"), 0.0)
 
 
 property_color  (value, _("Recolor (requires image color overlay mode with no image)"), "#ffffff")
+    ui_meta     ("role", "output-extent")
+
+property_color  (mcol, _("Recolor Image"), "#ffffff")
 
 property_file_path(src, _("Image file Overlay (works best using image color overlay mode)"), "")
     description (_("Source image file path (png, jpg, raw, svg, bmp, tif, ...)"))
@@ -117,7 +120,7 @@ property_double (hue, _("Hue rotation for Image File Overlay"),  0.0)
 static void attach (GeglOperation *operation)
 {
   GeglNode *gegl = operation->node;
-  GeglNode *input, *mcol, *gray, *graph1, *emboss, *median, *median2, *gaussian, *multiply, *hue, *multiply2, *median3, *graph2, *lightness, *imagefileoverlay, *output;
+  GeglNode *input, *col, *gray, *graph1, *emboss, *median, *median2, *gaussian, *multiply, *hue, *multiply2, *mcol2, *median3, *graph2, *lightness, *imagefileoverlay, *output;
 
   input    = gegl_node_get_input_proxy (gegl, "input");
   output   = gegl_node_get_output_proxy (gegl, "output");
@@ -128,7 +131,11 @@ static void attach (GeglOperation *operation)
                                   "operation", "gegl:median-blur",
                                   NULL);
 
-  mcol    = gegl_node_new_child (gegl,
+  col    = gegl_node_new_child (gegl,
+                                  "operation", "gegl:color-overlay",
+                                  NULL);
+
+  mcol2    = gegl_node_new_child (gegl,
                                   "operation", "gegl:color-overlay",
                                   NULL);
 
@@ -208,7 +215,9 @@ static void attach (GeglOperation *operation)
 
   gegl_operation_meta_redirect (operation, "alpha-percentile", median, "alpha-percentile");
 
-  gegl_operation_meta_redirect (operation, "value", mcol, "value");
+  gegl_operation_meta_redirect (operation, "value", col, "value");
+
+  gegl_operation_meta_redirect (operation, "mcol", mcol2, "value");
 
   gegl_operation_meta_redirect (operation, "scale", gray, "scale");
 
@@ -226,16 +235,20 @@ static void attach (GeglOperation *operation)
 
 
 
+/*mcol is color overlay and it needs to be blended with multiply blend mode. I introduced multiply2 for this reason as multiply is already occupied with the imagefileoverlay node  */
 
 
 
 
 
 
-
-  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, graph2, gray, multiply, lightness, output, NULL);
+  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, graph2, gray, multiply, lightness, multiply2, output, NULL);
   gegl_node_connect_from (multiply, "aux", hue, "output");
-  gegl_node_link_many (input, mcol, imagefileoverlay, hue, NULL);
+  gegl_node_connect_from (multiply2, "aux", mcol2, "output");
+  gegl_node_link_many (input, mcol2, NULL);
+  gegl_node_link_many (input, col, imagefileoverlay, hue, NULL);
+
+
 
 
 
