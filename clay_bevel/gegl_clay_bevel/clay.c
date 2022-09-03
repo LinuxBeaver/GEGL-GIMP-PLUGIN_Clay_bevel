@@ -33,13 +33,6 @@ property_string (string, _("Median"), TUTORIAL)
 
 
 
-#define TUTORIAL2 \
-" opacity value=2 opacity value=2 opacity value=2 "\
-
-
-property_string (string2, _("Opacity"), TUTORIAL2)
-    ui_meta     ("role", "output-extent")
-
 
 
 enum_start (gegl_emboss_typex)
@@ -50,6 +43,14 @@ enum_end (GeglEmbossTypex)
 property_enum (type, _("Emboss Type"),
                GeglEmbossTypex, gegl_emboss_typex, GEGL_EMBOSS_TYPE_BUMPMAPx)
     description(_("Rendering type"))
+
+
+property_double (opacity, _("Make clay wider or less wide (values above 2 will  harm dropshadow in a graph)"), 4)
+    description (_("Global opacity value that is always used on top of the optional auxiliary input buffer."))
+    value_range (1.5, 8.0)
+    ui_range    (1.5, 8.0)
+
+
 
 property_double (azimuth, _("Azimuth"), 50.0)
     description (_("Light angle (degrees)"))
@@ -121,7 +122,7 @@ property_color  (mcol, _("Recolor Everything - Use Recolor and Image overlay mod
 static void attach (GeglOperation *operation)
 {
   GeglNode *gegl = operation->node;
-  GeglNode *input, *col, *gray, *graph1, *emboss, *median, *median2, *gaussian, *multiply, *hue, *multiply2, *mcol2, *median3, *graph2, *lightness, *imagefileoverlay, *output;
+  GeglNode *input, *col, *gray, *graph1, *emboss, *median, *median2, *gaussian, *multiply, *hue, *multiply2, *mcol2, *median3, *graph2, *lightness, *imagefileoverlay, *opacity, *output;
 
   input    = gegl_node_get_input_proxy (gegl, "input");
   output   = gegl_node_get_output_proxy (gegl, "output");
@@ -142,6 +143,10 @@ static void attach (GeglOperation *operation)
 
   multiply    = gegl_node_new_child (gegl,
                                   "operation", "gegl:multiply",
+                                  NULL);
+
+  opacity   = gegl_node_new_child (gegl,
+                                  "operation", "gegl:opacity",
                                   NULL);
 
   multiply2    = gegl_node_new_child (gegl,
@@ -188,6 +193,8 @@ static void attach (GeglOperation *operation)
   hue    = gegl_node_new_child (gegl,
                                   "operation", "gegl:hue-chroma",
                                   NULL);
+
+
  
  
  
@@ -230,7 +237,7 @@ static void attach (GeglOperation *operation)
 
   gegl_operation_meta_redirect (operation, "string", graph1, "string");
 
-  gegl_operation_meta_redirect (operation, "string2", graph2, "string");
+  gegl_operation_meta_redirect (operation, "opacity", opacity, "value");
 
 
 
@@ -243,7 +250,7 @@ static void attach (GeglOperation *operation)
 
 
 
-  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, graph2, gray, multiply, lightness, multiply2, output, NULL);
+  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, opacity, gray, multiply, lightness, multiply2, output, NULL);
   gegl_node_connect_from (multiply, "aux", hue, "output");
   gegl_node_connect_from (multiply2, "aux", mcol2, "output");
   gegl_node_link_many (input, mcol2, NULL);
