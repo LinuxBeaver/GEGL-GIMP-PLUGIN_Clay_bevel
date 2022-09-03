@@ -1,4 +1,5 @@
 Preserve color mode is to preserve the original Colors
+
 Color and Image file overlay mode is for image file overlays or recoloring of the bevel
 
 Azimuth is the light rotation
@@ -9,7 +10,7 @@ Depth enhances the bevel by darkening its inners
 
 Internal Median Blur Radius is the main control of the bevel effect
 
-Interal Median Percentile sliders makes the bevel slim if down and fat if slide up. 
+Interal Median Percentile sliders makes the bevel slim if down, and fat if slide up. 
 Play around with the two to find the best setting. Certain combinations ruin the bevel. I do
 not really understand what the internal medians do but I kept them for unique customizations.
 
