@@ -51,7 +51,7 @@ property_enum (type, _("Emboss Type"),
                GeglEmbossTypex, gegl_emboss_typex, GEGL_EMBOSS_TYPE_BUMPMAPx)
     description(_("Rendering type"))
 
-property_double (azimuth, _("Azimuth"), 75.0)
+property_double (azimuth, _("Azimuth"), 50.0)
     description (_("Light angle (degrees)"))
     value_range (30, 90)
     ui_meta ("unit", "degree")
@@ -62,23 +62,23 @@ property_double (elevation, _("Elevation"), 32.0)
     value_range (25, 90)
     ui_meta ("unit", "degree")
 
-property_int (depth, _("Depth (makes darker)"), 26)
+property_int (depth, _("Depth (makes darker)"), 36)
     description (_("Filter width"))
     value_range (1, 100)
 
 
 
-property_int  (size, _("Internal Median Blur Radius"), 9)
+property_int  (size, _("Internal Median Blur Radius"), 3)
   value_range (-10, 10)
   ui_range    (-10, 10)
   ui_meta     ("unit", "pixel-distance")
   description (_("Neighborhood radius, a negative value will calculate with inverted percentiles"))
 
-property_double  (percentile, _("Internal Median Blur Percentile"), 61)
+property_double  (percentile, _("Internal Median Blur Percentile"), 65)
   value_range (20, 80)
   description (_("Neighborhood color percentile"))
 
-property_double  (alpha_percentile, _("Internal Median Blur Alpha percentile"), 69)
+property_double  (alpha_percentile, _("Internal Median Blur Alpha percentile"), 75)
   value_range (21, 100)
   description (_("Neighborhood alpha percentile"))
 
@@ -94,18 +94,18 @@ property_double (lightness, _("Lightness"), 0.0)
    value_range  (-18.0, 18.0)
 
 
-property_color  (value, _("Recolor (requires image color overlay mode with no image)"), "#ffffff")
+property_color  (value, _("recolor"), "#ffffff")
     ui_meta     ("role", "output-extent")
 
 
-property_file_path(src, _("Image file Overlay (works best using image color overlay mode)"), "")
+property_file_path(src, _("Image file Overlay - Works best with Recolor and Image overlay mode"), "")
     description (_("Source image file path (png, jpg, raw, svg, bmp, tif, ...)"))
 
 property_double (hue, _("Hue rotation for Image File Overlay"),  0.0)
    description  (_("Hue adjustment"))
    value_range  (-180.0, 180.0)
 
-property_color  (mcol, _("Recolor Everything - Use Recolor and Image overlay mode)"), "#ffffff")
+property_color  (mcol, _("Recolor Everything - Use Recolor and Image overlay mode"), "#ffffff")
 
 
 
