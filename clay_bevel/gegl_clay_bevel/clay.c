@@ -271,7 +271,7 @@ gegl_op_class_init (GeglOpClass *klass)
     "title",       _("Clay Bevel"),
     "categories",  "Artistic",
     "reference-hash", "33do6a1h24fk10fjf25sb2ac",
-    "description", _("Clay Bevel Text styling using GEGL. This does not work on small text.  "
+    "description", _("Clay Bevel Text styling using GEGL. This does not well on small text and will not work at all on very dark/black text.  "
                      ""),
     NULL);
 }
