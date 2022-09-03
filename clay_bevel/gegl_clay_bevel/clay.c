@@ -44,20 +44,20 @@ property_string (string2, _("Opacity"), TUTORIAL2)
 
 enum_start (gegl_emboss_typex)
   enum_value (GEGL_EMBOSS_TYPE_EMBOSSx,  "embossx",  N_("Recolor and Image file overlay mode"))
-  enum_value (GEGL_EMBOSS_TYPE_BUMPMAPx, "bumpmapx", N_("Preserve original color mode)"))
+  enum_value (GEGL_EMBOSS_TYPE_BUMPMAPx, "bumpmapx", N_("Preserve original color mode"))
 enum_end (GeglEmbossTypex)
 
 property_enum (type, _("Emboss Type"),
                GeglEmbossTypex, gegl_emboss_typex, GEGL_EMBOSS_TYPE_BUMPMAPx)
     description(_("Rendering type"))
 
-property_double (azimuth, _("Azimuth"), 70.0)
+property_double (azimuth, _("Azimuth"), 75.0)
     description (_("Light angle (degrees)"))
     value_range (30, 90)
     ui_meta ("unit", "degree")
     ui_meta ("direction", "ccw")
 
-property_double (elevation, _("Elevation"), 53.0)
+property_double (elevation, _("Elevation"), 32.0)
     description (_("Elevation angle (degrees)"))
     value_range (25, 90)
     ui_meta ("unit", "degree")
@@ -79,7 +79,7 @@ property_double  (percentile, _("Internal Median Blur Percentile"), 61)
   description (_("Neighborhood color percentile"))
 
 property_double  (alpha_percentile, _("Internal Median Blur Alpha percentile"), 69)
-  value_range (17, 100)
+  value_range (21, 100)
   description (_("Neighborhood alpha percentile"))
 
 
@@ -97,7 +97,6 @@ property_double (lightness, _("Lightness"), 0.0)
 property_color  (value, _("Recolor (requires image color overlay mode with no image)"), "#ffffff")
     ui_meta     ("role", "output-extent")
 
-property_color  (mcol, _("Recolor Image"), "#ffffff")
 
 property_file_path(src, _("Image file Overlay (works best using image color overlay mode)"), "")
     description (_("Source image file path (png, jpg, raw, svg, bmp, tif, ...)"))
@@ -105,6 +104,8 @@ property_file_path(src, _("Image file Overlay (works best using image color over
 property_double (hue, _("Hue rotation for Image File Overlay"),  0.0)
    description  (_("Hue adjustment"))
    value_range  (-180.0, 180.0)
+
+property_color  (mcol, _("Recolor Everything - Use Recolor and Image overlay mode)"), "#ffffff")
 
 
 
@@ -270,7 +271,7 @@ gegl_op_class_init (GeglOpClass *klass)
     "title",       _("Clay Bevel"),
     "categories",  "Artistic",
     "reference-hash", "33do6a1h24fk10fjf25sb2ac",
-    "description", _("Clay Bevel Text styling using GEGL. This does not work on small text.)  "
+    "description", _("Clay Bevel Text styling using GEGL. This does not work on small text.  "
                      ""),
     NULL);
 }
