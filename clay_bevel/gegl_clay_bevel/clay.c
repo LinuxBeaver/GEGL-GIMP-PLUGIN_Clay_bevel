@@ -122,7 +122,7 @@ property_color  (mcol, _("Recolor Everything - Use Recolor and Image overlay mod
 static void attach (GeglOperation *operation)
 {
   GeglNode *gegl = operation->node;
-  GeglNode *input, *col, *gray, *graph1, *emboss, *median, *median2, *gaussian, *multiply, *hue, *multiply2, *mcol2, *median3, *graph2, *lightness, *imagefileoverlay, *opacity, *output;
+  GeglNode *input, *col, *gray, *graph1, *emboss, *median, *median2, *gaussian, *multiply, *hue, *multiply2, *nop, *nop2, *mcol2, *median3, *graph2, *lightness, *imagefileoverlay, *opacity, *output;
 
   input    = gegl_node_get_input_proxy (gegl, "input");
   output   = gegl_node_get_output_proxy (gegl, "output");
@@ -144,6 +144,16 @@ static void attach (GeglOperation *operation)
   multiply    = gegl_node_new_child (gegl,
                                   "operation", "gegl:multiply",
                                   NULL);
+
+  nop    = gegl_node_new_child (gegl,
+                                  "operation", "gegl:nop",
+                                  NULL);
+
+  nop2    = gegl_node_new_child (gegl,
+                                  "operation", "gegl:nop",
+                                  NULL);
+
+
 
   opacity   = gegl_node_new_child (gegl,
                                   "operation", "gegl:opacity",
@@ -250,11 +260,11 @@ static void attach (GeglOperation *operation)
 
 
 
-  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, opacity, gray, multiply, lightness, multiply2, output, NULL);
+  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, opacity, gray, nop, multiply, lightness, nop2, multiply2, output, NULL);
   gegl_node_connect_from (multiply, "aux", hue, "output");
   gegl_node_connect_from (multiply2, "aux", mcol2, "output");
-  gegl_node_link_many (input, mcol2, NULL);
-  gegl_node_link_many (input, col, imagefileoverlay, hue, NULL);
+  gegl_node_link_many (nop2, mcol2, NULL);
+  gegl_node_link_many (nop, col, imagefileoverlay, hue, NULL);
 
 
 
