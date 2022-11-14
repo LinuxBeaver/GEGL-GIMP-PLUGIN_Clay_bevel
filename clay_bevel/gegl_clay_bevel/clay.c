@@ -47,7 +47,7 @@ property_enum (type, _("Emboss Type"),
 
 property_double (opacity, _("Make clay wider or less wide (values above 2 will  harm dropshadow in a graph)"), 4)
     description (_("Global opacity value that is always used on top of the optional auxiliary input buffer."))
-    value_range (1.5, 8.0)
+    value_range (0.8, 8.0)
     ui_range    (1.5, 8.0)
 
 
