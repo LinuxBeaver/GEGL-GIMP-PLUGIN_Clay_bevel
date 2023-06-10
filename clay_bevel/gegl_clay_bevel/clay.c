@@ -122,7 +122,7 @@ property_color  (mcol, _("Recolor Everything - Use Recolor and Image overlay mod
 static void attach (GeglOperation *operation)
 {
   GeglNode *gegl = operation->node;
-  GeglNode *input, *col, *gray, *graph1, *emboss, *median, *median2, *gaussian, *multiply, *hue, *multiply2, *nop, *nop2, *mcol2, *median3, *graph2, *lightness, *imagefileoverlay, *opacity, *output;
+  GeglNode *input, *col, *gray, *graph1, *emboss, *median, *median2, *gaussian, *multiply, *hue, *multiply2, *nop, *nop2, *mcol2, *median3, *graph2, *lightness, *imagefileoverlay, *opacity, *repairgeglgraph, *output;
 
   input    = gegl_node_get_input_proxy (gegl, "input");
   output   = gegl_node_get_output_proxy (gegl, "output");
@@ -163,10 +163,11 @@ static void attach (GeglOperation *operation)
                                   "operation", "gegl:multiply",
                                   NULL);
 
+
   gaussian    = gegl_node_new_child (gegl,
                                   "operation", "gegl:gaussian-blur",
+   "filter", 1,
                                   NULL);
-
 
   median2    = gegl_node_new_child (gegl,
                                   "operation", "gegl:median-blur",
@@ -204,8 +205,15 @@ static void attach (GeglOperation *operation)
                                   "operation", "gegl:hue-chroma",
                                   NULL);
 
+  repairgeglgraph      = gegl_node_new_child (gegl, "operation", "gegl:median-blur",
+                                         "radius",       0,
+                                         NULL);
 
- 
+ /*Repair GEGL Graph is a critical operation for Gimp's non-destructive future.
+A median blur at zero radius is confirmed to make no changes to an image. 
+This option resets gegl:opacity's value to prevent a known bug where
+plugins like clay, glossy balloon and custom bevel glitch out when
+drop shadow is applied in a gegl graph below them.*/
  
  
  
@@ -257,10 +265,7 @@ static void attach (GeglOperation *operation)
 
 
 
-
-
-
-  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, opacity, gray, nop, multiply, lightness, nop2, multiply2, output, NULL);
+  gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, opacity, gray, nop, multiply, lightness, nop2, multiply2, repairgeglgraph, output, NULL);
   gegl_node_connect_from (multiply, "aux", hue, "output");
   gegl_node_connect_from (multiply2, "aux", mcol2, "output");
   gegl_node_link_many (nop2, mcol2, NULL);
