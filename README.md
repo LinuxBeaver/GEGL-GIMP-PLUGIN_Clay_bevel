@@ -54,5 +54,8 @@ meson setup --buildtype=release build
 ninja -C build
 ```
 
+## More image previews to show off how based this plugin is. 
+![image](https://github.com/LinuxBeaver/GEGL-Clay-Bevel/assets/78667207/1ffae6dc-1164-4e00-98ed-ab895f60754f)
 
 
+![image](https://github.com/LinuxBeaver/GEGL-Clay-Bevel/assets/78667207/1a44b6ab-81b0-4699-987e-710ec6915520)
