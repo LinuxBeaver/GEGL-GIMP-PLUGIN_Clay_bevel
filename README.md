@@ -1,4 +1,4 @@
-![image preview](previewbevel.png)
+![image preview](preview.png)
 
 You need to build clay.so/dll and put it in /gegl-0.4/plug-ins or just use my precompiled binaries.
 
