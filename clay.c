@@ -232,8 +232,8 @@ drop shadow is applied in a gegl graph below them.*/
 /*mcol is color overlay and it needs to be blended with multiply blend mode. I introduced multiply2 for this reason as multiply is already occupied with the imagefileoverlay node  */
 
   gegl_node_link_many (input, graph1, emboss, median, median2, gaussian, median3, opacity, gray, nop, multiply, lightness, nop2, multiply2, repairgeglgraph, output, NULL);
-  gegl_node_connect_from (multiply, "aux", hue, "output");
-  gegl_node_connect_from (multiply2, "aux", mcol2, "output");
+  gegl_node_connect (multiply, "aux", hue, "output");
+  gegl_node_connect (multiply2, "aux", mcol2, "output");
   gegl_node_link_many (nop2, mcol2, NULL);
   gegl_node_link_many (nop, col, imagefileoverlay, hue, NULL);
 
@@ -249,7 +249,7 @@ gegl_op_class_init (GeglOpClass *klass)
   operation_class->attach = attach;
 
   gegl_operation_class_set_keys (operation_class,
-    "name",        "gegl:clay",
+    "name",        "lb:clay",
     "title",       _("Clay Bevel"),
     "categories",  "Artistic",
     "reference-hash", "33do6a1h24fk10fjf25sb2ac",
