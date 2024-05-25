@@ -18,12 +18,12 @@
  */
 /*
 Recreation of GEGL Graph from a early 2022 study. May not be 100% accurate.
-Run this in Gimp's GEGL Graph filter to test without installing. 
+Run this in Gimp's GEGL Graph filter to test without installing.
 
 gegl:color-overlay value=#ffec00
 median-blur percentile=50 alpha-percentile=2
 gaussian-blur #stays locked at 0.50 in default. Never changes.
-emboss  type=bumpmap azimuth=70  elevation=40 depth=3                   
+emboss  type=bumpmap azimuth=70  elevation=40 depth=3
 median-blur radius=10 percentile=39 alpha-percentile=80 high-precision=yes
 opacity value=2
 median-blur radius=0
@@ -37,10 +37,7 @@ median-blur radius=0
 
 
 #define TUTORIAL \
-" median-blur percentile=80 alpha-percentile=2 gaussian-blur "\
-
-
-
+" median-blur percentile=80 alpha-percentile=2 gaussian-blur std-dev-x=1.50 std-dev-y=1.50 "\
 
 enum_start (gegl_emboss_typex)
   enum_value (GEGL_EMBOSS_TYPE_EMBOSSx,  "embossx",  N_("Recolor and Image file overlay mode"))
@@ -52,7 +49,7 @@ property_enum (type, _("Emboss Type"),
     description(_("Rendering type"))
 
 
-property_double (opacity, _("Widness of Bevel"), 7)
+property_double (opacity, _("Widness of Bevel"), 7.0)
     description (_("Global opacity to make clay wider or"))
     value_range (1.0, 10.0)
     ui_range    (1.5, 10.0)
@@ -60,20 +57,18 @@ property_double (opacity, _("Widness of Bevel"), 7)
 
 property_double (azimuth, _("Azimuth"), 50.0)
     description (_("Light angle (degrees)"))
-    value_range (30, 90)
+    value_range (30.0, 90.0)
     ui_meta ("unit", "degree")
     ui_meta ("direction", "ccw")
 
 property_double (elevation, _("Elevation"), 32.0)
     description (_("Elevation angle (degrees). This along with gaussian blur is primarily what brings out the clay effect. "))
-    value_range (25, 90)
+    value_range (25.0, 90.0)
     ui_meta ("unit", "degree")
 
 property_int (depth, _("Depth"), 36)
     description (_("Bevel Filter width. This will Make Bevel Darker"))
     value_range (1, 100)
-
-
 
 property_int  (size, _("Internal Median Blur Radius"), 3)
   value_range (-10, 10)
@@ -81,20 +76,18 @@ property_int  (size, _("Internal Median Blur Radius"), 3)
   ui_meta     ("unit", "pixel-distance")
   description (_("Neighborhood radius, a negative value will calculate with inverted percentiles"))
 
-property_double  (percentile, _("Internal Median Blur Percentile"), 65)
-  value_range (20, 80)
+property_double  (percentile, _("Internal Median Blur Percentile"), 65.0)
+  value_range (20.0, 80.0)
   description (_("Neighborhood color percentile"))
 
-property_double  (alpha_percentile, _("Internal Median Blur Alpha percentile"), 75)
-  value_range (21, 100)
+property_double  (alpha_percentile, _("Internal Median Blur Alpha percentile"), 75.0)
+  value_range (21.0, 100.0)
   description (_("Neighborhood alpha percentile"))
 
-
-
-property_double (gaus, _("Expand Bevel"), 3)
-   description (_("An internal Gaussian blur to expand the bevel. Larger text can benefit from a large gaussian, On small text keep this low. "))
-   value_range (0.0, 7.0)
-
+property_double (gaus, _("Expand Bevel"), 3.0)
+   description (_("An internal Gaussian blur to expand the bevel. Larger text can benefit from a large gaussian, On small text keep this low."))
+   value_range (0.0, 12.0)
+   ui_range    (0.0, 7.0)
 
 property_double (lightness, _("Lightness"), 0.0)
    description  (_("Lightness adjustment"))
@@ -136,7 +129,7 @@ static void attach (GeglOperation *operation)
                                   NULL);
 
   col    = gegl_node_new_child (gegl,
-                                  "operation", "gegl:color-overlay", "value", hidden_color_clay, 
+                                  "operation", "gegl:color-overlay", "value", hidden_color_clay,
                                   NULL);
 
   mcol2    = gegl_node_new_child (gegl,
@@ -206,13 +199,12 @@ static void attach (GeglOperation *operation)
                                          NULL);
 
  /*Repair GEGL Graph is a critical operation for Gimp's non-destructive future.
-A median blur at zero radius is confirmed to make no changes to an image. 
+A median blur at zero radius is confirmed to make no changes to an image.
 This option resets gegl:opacity's value to prevent a known bug where
 plugins like clay, glossy balloon and custom bevel glitch out when
 drop shadow is applied in a gegl graph below them.*/
- 
+
   gegl_operation_meta_redirect (operation, "size", median, "radius");
-  gegl_operation_meta_redirect (operation, "size2", median2, "radius");
   gegl_operation_meta_redirect (operation, "gaus", gaussian, "std-dev-x");
   gegl_operation_meta_redirect (operation, "gaus", gaussian, "std-dev-y");
   gegl_operation_meta_redirect (operation, "azimuth", emboss, "azimuth");
@@ -222,7 +214,6 @@ drop shadow is applied in a gegl graph below them.*/
   gegl_operation_meta_redirect (operation, "percentile", median, "percentile");
   gegl_operation_meta_redirect (operation, "alpha-percentile", median, "alpha-percentile");
   gegl_operation_meta_redirect (operation, "mcol", mcol2, "value");
-  gegl_operation_meta_redirect (operation, "scale", gray, "scale");
   gegl_operation_meta_redirect (operation, "src", imagefileoverlay, "src");
   gegl_operation_meta_redirect (operation, "lightness", lightness, "lightness");
   gegl_operation_meta_redirect (operation, "hue", hue, "hue");
